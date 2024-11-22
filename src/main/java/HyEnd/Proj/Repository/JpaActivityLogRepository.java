@@ -17,18 +17,16 @@ public class JpaActivityLogRepository implements ActivityLogRepository {
     }
 
     @Override
-    public Long saveLog(ActivityLog activityLog) {
+    public void saveLog(ActivityLog activityLog) {
         em.persist(activityLog);
-        return activityLog.getId();
     }
     public void updateLog(ActivityLog activityLog) {
         em.merge(activityLog);
     }
 
     @Override
-    public Long saveLogDetail(ActivityLogDetail activityLogDetail) {
+    public void saveLogDetail(ActivityLogDetail activityLogDetail) {
         em.persist(activityLogDetail);
-        return activityLogDetail.getId();
     }
 
     @Override
