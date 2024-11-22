@@ -21,14 +21,14 @@ public class ActivityLogDetail {
     @JoinColumn(name = "activityLogId")
     private ActivityLog activityLog;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "activityId")
     private Activity activity;
 
     @Column
-    private String duration;
+    private Long duration;
 
     @Column
-    private Float caloriesBurned;
+    private Double caloriesBurned;
 
 }
