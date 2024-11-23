@@ -1,5 +1,6 @@
 package HyEnd.Proj.Controller;
 
+import HyEnd.Proj.DTO.ActivityLogWithDetailsDTO;
 import HyEnd.Proj.DTO.RequestActivitiesDTO;
 import HyEnd.Proj.Entity.ActivityLog;
 import HyEnd.Proj.Service.ActivityLogService;
@@ -37,14 +38,14 @@ public class ActivityLogController {
         this.activityLogService = activityLogService;
     }
 
-    // localhost:8080/activities/save?name=jogging&met=4
+    // localhost:8080/activities-log/receive-log + body에 위 예시대로 Json
     @PostMapping("/receive-log")
     @ResponseBody
     public Long saveActivityLog(@RequestBody RequestActivitiesDTO requestActivitiesDTO) {
         return activityLogService.save(requestActivitiesDTO);
     }
 
-    // localhost:8080/activities/all
+    // localhost:8080/activities-log/all
     @GetMapping("/all")
     @ResponseBody
     public List<ActivityLog> getActivityLogAll() {
@@ -52,10 +53,10 @@ public class ActivityLogController {
         return activityLogService.findAll();
     }
 
-    // localhost:8080/activities/id?id=1
+    // localhost:8080/activities-log/id?id=1
     @GetMapping("/id")
     @ResponseBody
-    public Optional<ActivityLog> getActivityLogById(@RequestParam("id") Long id) {
+    public Optional<ActivityLogWithDetailsDTO> getActivityLogById(@RequestParam("id") Long id) {
         return activityLogService.findById(id);
     }
 

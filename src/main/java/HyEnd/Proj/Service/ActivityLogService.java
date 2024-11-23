@@ -1,6 +1,7 @@
 package HyEnd.Proj.Service;
 
 import HyEnd.Proj.DTO.ActivitiesGroupDTO;
+import HyEnd.Proj.DTO.ActivityLogWithDetailsDTO;
 import HyEnd.Proj.DTO.RequestActivitiesDTO;
 import HyEnd.Proj.Entity.Activity;
 import HyEnd.Proj.Entity.ActivityLog;
@@ -32,7 +33,7 @@ public class ActivityLogService {
         return activityLogRepository.findAll();
     }
 
-    public Optional<ActivityLog> findById(Long id) {
+    public Optional<ActivityLogWithDetailsDTO> findById(Long id) {
         return activityLogRepository.findLogById(id);
     }
 

@@ -1,5 +1,6 @@
 package HyEnd.Proj.Repository;
 
+import HyEnd.Proj.DTO.ActivityLogWithDetailsDTO;
 import HyEnd.Proj.Entity.ActivityLog;
 import HyEnd.Proj.Entity.ActivityLogDetail;
 import jakarta.persistence.EntityManager;
@@ -20,6 +21,8 @@ public class JpaActivityLogRepository implements ActivityLogRepository {
     public void saveLog(ActivityLog activityLog) {
         em.persist(activityLog);
     }
+
+    @Override
     public void updateLog(ActivityLog activityLog) {
         em.merge(activityLog);
     }
@@ -30,20 +33,20 @@ public class JpaActivityLogRepository implements ActivityLogRepository {
     }
 
     @Override
-    public Optional<ActivityLog> findLogById(Long id) {
+    public Optional<ActivityLogWithDetailsDTO> findLogById(Long id) {
         ActivityLog activityLog = em.find(ActivityLog.class, id);
-        return Optional.ofNullable(activityLog);
-    }
 
-    @Override
-    public Optional<ActivityLogDetail> findLogDetailById(Long id) {
-        ActivityLogDetail activityLogDetail = em.find(ActivityLogDetail.class, id);
-        return Optional.ofNullable(activityLogDetail);
+        List<ActivityLogDetail> activityLogDetailList =  em.createQuery(
+                        "select ald from ActivityLogDetail ald where ald.activityLog = :a", ActivityLogDetail.class)
+                .setParameter("a", activityLog).getResultList();
+
+        ActivityLogWithDetailsDTO activityLogEntity = new ActivityLogWithDetailsDTO(activityLog, activityLogDetailList);
+        return Optional.of(activityLogEntity);
     }
 
 
     @Override
     public List<ActivityLog> findAll() {
-        return List.of();
+        return em.createQuery("select al from ActivityLog  al", ActivityLog.class).getResultList();
     }
 }
