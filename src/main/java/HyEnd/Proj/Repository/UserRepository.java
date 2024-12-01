@@ -7,5 +7,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User save(User user);
     boolean existsByUserId(String userId);
-
 }
