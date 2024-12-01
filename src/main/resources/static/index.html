@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>API 테스트 페이지</title>
+  <style>
+    /* 간단한 스타일 추가 */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    form {
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    pre {
+      background-color: #f4f4f4;
+      padding: 10px;
+    }
+    #message {
+      margin-top: 20px;
+      color: red;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>API 테스트 페이지</h1>
+
+  <!-- 회원가입 폼 -->
+  <h2>회원가입</h2>
+  <form id="signup-form">
+    <label for="signup-userId">아이디</label>
+    <input type="text" id="signup-userId" required>
+
+    <label for="signup-password">비밀번호</label>
+    <input type="password" id="signup-password" required>
+
+    <label for="signup-email">이메일</label>
+    <input type="email" id="signup-email" required>
+
+    <label for="signup-gender">성별</label>
+    <input type="text" id="signup-gender" required>
+
+    <label for="signup-height">키</label>
+    <input type="number" id="signup-height">
+
+    <label for="signup-weight">몸무게</label>
+    <input type="number" id="signup-weight">
+
+    <label for="signup-smm">골격근량</label>
+    <input type="number" id="signup-smm">
+
+    <label for="signup-bfp">체지방률</label>
+    <input type="number" id="signup-bfp">
+
+    <button type="submit">회원가입</button>
+  </form>
+
+  <!-- 로그인 폼 -->
+  <h2>로그인</h2>
+  <form id="login-form">
+    <label for="login-userId">아이디</label>
+    <input type="text" id="login-userId" required>
+
+    <label for="login-password">비밀번호</label>
+    <input type="password" id="login-password" required>
+
+    <button type="submit">로그인</button>
+  </form>
+
+  <!-- 회원 정보 조회 -->
+  <h2>회원 정보 조회</h2>
+  <button id="get-user-info">회원 정보 가져오기</button>
+  <pre id="user-info"></pre>
+
+  <!-- 로그아웃 -->
+  <h2>로그아웃</h2>
+  <button id="logout">로그아웃</button>
+
+  <!-- 회원탈퇴 -->
+  <h2>회원탈퇴</h2>
+  <button id="delete-account">회원탈퇴</button>
+
+  <!-- 메시지 표시 -->
+  <div id="message"></div>
+</div>
+
+<script>
+  // 서버의 기본 URL 설정
+  const baseUrl = 'http://localhost:8080';
+
+  // 회원가입 이벤트 처리
+  document.getElementById('signup-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const data = {
+      userId: document.getElementById('signup-userId').value,
+      password: document.getElementById('signup-password').value,
+      email: document.getElementById('signup-email').value,
+      gender: document.getElementById('signup-gender').value,
+      height: document.getElementById('signup-height').value,
+      weight: document.getElementById('signup-weight').value,
+      smm: document.getElementById('signup-smm').value,
+      bfp: document.getElementById('signup-bfp').value
+    };
+
+    fetch(`${baseUrl}/users/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+            .then(response => response.text())
+            .then(result => {
+              alert(result);
+            })
+            .catch(error => console.error('Error:', error));
+  });
+
+  // 로그인 이벤트 처리
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const data = {
+      userId: document.getElementById('login-userId').value,
+      password: document.getElementById('login-password').value
+    };
+
+    fetch(`${baseUrl}/users/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+      credentials: 'include' // 세션 쿠키를 포함하여 요청
+    })
+            .then(response => response.text())
+            .then(result => {
+              alert(result);
+            })
+            .catch(error => console.error('Error:', error));
+  });
+
+  // 회원 정보 조회 이벤트 처리
+  document.getElementById('get-user-info').addEventListener('click', function() {
+    fetch(`${baseUrl}/users/me`, {
+      method: 'GET',
+      credentials: 'include' // 세션 쿠키를 포함하여 요청
+    })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('인증되지 않은 사용자입니다.');
+              }
+              return response.json();
+            })
+            .then(data => {
+              document.getElementById('user-info').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => alert(error.message));
+  });
+
+  // 로그아웃 이벤트 처리
+  document.getElementById('logout').addEventListener('click', function() {
+    fetch(`${baseUrl}/users/logout`, {
+      method: 'POST',
+      credentials: 'include' // 세션 쿠키를 포함하여 요청
+    })
+            .then(response => response.text())
+            .then(result => {
+              alert(result);
+            })
+            .catch(error => console.error('Error:', error));
+  });
+
+  // 회원탈퇴 이벤트 처리
+  document.getElementById('delete-account').addEventListener('click', function() {
+    if (!confirm('정말로 회원탈퇴를 하시겠습니까?')) {
+      return; // 사용자 확인 후 진행
+    }
+
+    fetch(`${baseUrl}/users/me`, {
+      method: 'DELETE',
+      credentials: 'include', // 세션 쿠키를 포함하여 요청
+    })
+            .then(response => {
+              if (response.ok) {
+                alert('회원탈퇴가 완료되었습니다.');
+                // 탈퇴 후 리다이렉션
+                window.location.href = '/index.html';
+              } else {
+                return response.text().then(text => {
+                  throw new Error(text || '회원탈퇴에 실패했습니다.');
+                });
+              }
+            })
+            .catch(error => alert(error.message));
+  });
+
+</script>
+</body>
+</html>
