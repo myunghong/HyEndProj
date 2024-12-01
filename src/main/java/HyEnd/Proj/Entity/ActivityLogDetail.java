@@ -1,5 +1,6 @@
 package HyEnd.Proj.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,17 +19,18 @@ public class ActivityLogDetail {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "activityLogId")
     private ActivityLog activityLog;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "activityId")
     private Activity activity;
 
     @Column
-    private String duration;
+    private Long duration;
 
     @Column
-    private Float caloriesBurned;
+    private Double caloriesBurned;
 
 }

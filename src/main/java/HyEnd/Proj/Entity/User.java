@@ -1,5 +1,6 @@
 package HyEnd.Proj.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,13 +17,16 @@ import java.util.List;
 @AllArgsConstructor
 public class User {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String userId;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
@@ -44,9 +48,11 @@ public class User {
     @Column
     private Long bfp;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<DietLog> dietLogList = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<ActivityLog> activityLogList = new ArrayList<>();
 }
