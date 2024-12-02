@@ -36,7 +36,6 @@ public class ActivityService {
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 활동입니다.");
                 });
-
         activityRepository.save(activity);
         return activity.getId();
     }

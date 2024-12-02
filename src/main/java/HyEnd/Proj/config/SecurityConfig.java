@@ -18,7 +18,7 @@ public class SecurityConfig {
                         // 올바른 URL 패턴으로 수정
                         .requestMatchers("/", "/index.html", "/static/**").permitAll()
                         .requestMatchers("/users/**").permitAll() // 특정 엔드포인트 허용
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()//.authenticated()
                 )
                 .formLogin(form -> form.disable());
         return http.build();

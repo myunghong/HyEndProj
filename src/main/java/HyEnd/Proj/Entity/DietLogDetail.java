@@ -1,5 +1,6 @@
 package HyEnd.Proj.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,17 +19,18 @@ public class DietLogDetail {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "dietLogId", nullable = false)
     private DietLog dietLog;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "foodId")
     private Food food;
 
     @Column
-    private Long gram;
+    private float servings; //몇인분인가?
 
     @Column
-    private Long servingCalories;
+    private float servingCalories; //몇인분 * 1인분 칼로리
 
 }

@@ -28,8 +28,10 @@ public class DietLog {
     @OneToMany(mappedBy = "dietLog")
     private List<DietLogDetail> dietLogDetails = new ArrayList<>();
 
-    private Date dietDate;
+    @Column
+    private Date date;
 
-    private Long totalCaloriesConsumed;
+    @Column
+    private float totalCaloriesConsumed;
 
 }

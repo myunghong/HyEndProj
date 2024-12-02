@@ -21,5 +21,20 @@ public class Food {
     private String foodName;
 
     @Column
-    private Float caloriesPerGram;
+    private Float caloriesPerserving;
 }
+//{
+//        "userId": "test1",
+//        "foodList": [
+//        {
+//        "id": 1,
+//        "served": 1.5
+//        },
+//        {
+//        "id": 2,
+//        "served": 1
+//        }
+//        ],
+//        "dietDate": "2024-12-02"
+//
+//        }
